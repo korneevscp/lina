@@ -101,6 +101,39 @@
     <aside>
       <div class="box avis">
         <h3>Appel à témoins</h3>
+        <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:200px;display:block;margin:0 auto 10px;border:4px solid #f3efe5">
+          <defs>
+            <radialGradient id="pbg" cx=".5" cy=".35" r=".8"><stop offset="0" stop-color="#8fa9c2"/><stop offset="1" stop-color="#3d5269"/></radialGradient>
+            <linearGradient id="phair" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b4528"/><stop offset="1" stop-color="#3e2614"/></linearGradient>
+            <linearGradient id="pjk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2c522"/><stop offset="1" stop-color="#b48a0c"/></linearGradient>
+            <filter id="pso"><feGaussianBlur stdDeviation=".7"/></filter>
+            <filter id="pgr"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .28 0" result="m"/><feComposite in="m" in2="SourceGraphic" operator="in" result="c"/><feBlend in="SourceGraphic" in2="c" mode="overlay"/></filter>
+            <clipPath id="pface"><ellipse cx="100" cy="102" rx="37" ry="45"/></clipPath>
+          </defs>
+          <g filter="url(#pgr)">
+            <rect width="200" height="240" fill="url(#pbg)"/>
+            <g filter="url(#pso)">
+              <path d="M52 92 Q48 40 100 36 Q152 40 148 92 L152 170 Q130 176 120 150 L80 150 Q70 176 48 170Z" fill="url(#phair)"/>
+              <path d="M30 240 Q34 182 78 168 L122 168 Q166 182 170 240Z" fill="url(#pjk)"/>
+              <path d="M100 170 V240" stroke="#8c6a08" stroke-width="2"/>
+              <path d="M78 168 Q100 190 122 168 L116 160 L84 160Z" fill="#7d5d06"/>
+              <rect x="88" y="138" width="24" height="30" fill="#d9a585"/>
+              <ellipse cx="100" cy="102" rx="37" ry="45" fill="#e8b996"/>
+              <ellipse cx="63" cy="106" rx="6" ry="10" fill="#d9a585"/><ellipse cx="137" cy="106" rx="6" ry="10" fill="#d9a585"/>
+              <path d="M62 82 Q66 50 100 50 Q134 50 138 82 Q120 70 100 74 Q80 70 62 82Z" fill="url(#phair)"/>
+            </g>
+            <g clip-path="url(#pface)">
+              <rect x="63" y="57" width="74" height="90" fill="#d8ab8a"/>
+              <g opacity=".95">
+                <rect x="63" y="57" width="12" height="12" fill="#c99a78"/><rect x="75" y="69" width="12" height="12" fill="#e9c2a2"/><rect x="87" y="57" width="12" height="12" fill="#b88c6a"/><rect x="99" y="69" width="12" height="12" fill="#e2b493"/><rect x="111" y="57" width="12" height="12" fill="#cfa07e"/><rect x="123" y="69" width="12" height="12" fill="#d8ab8a"/>
+                <rect x="63" y="81" width="12" height="12" fill="#e5b898"/><rect x="75" y="93" width="12" height="12" fill="#5a3a2a"/><rect x="87" y="81" width="12" height="12" fill="#dcae8d"/><rect x="99" y="93" width="12" height="12" fill="#ecc4a4"/><rect x="111" y="93" width="12" height="12" fill="#5e3d2c"/><rect x="123" y="81" width="12" height="12" fill="#c9987a"/>
+                <rect x="63" y="105" width="12" height="12" fill="#d29f7e"/><rect x="87" y="105" width="12" height="12" fill="#e7bb9b"/><rect x="99" y="117" width="12" height="12" fill="#cf9a86"/><rect x="111" y="105" width="12" height="12" fill="#dcae8d"/><rect x="75" y="117" width="12" height="12" fill="#e1b392"/><rect x="123" y="117" width="12" height="12" fill="#d29f7e"/>
+                <rect x="87" y="129" width="12" height="12" fill="#b9787a"/><rect x="99" y="129" width="12" height="12" fill="#c4847f"/><rect x="63" y="129" width="12" height="12" fill="#dcae8d"/><rect x="111" y="129" width="12" height="12" fill="#e4b696"/>
+              </g>
+            </g>
+          </g>
+        </svg>
+        <div class="small" style="opacity:.6;margin:-4px 0 8px">Photo transmise par la famille</div>
         <div class="big">LINA MOREL</div>
         <p class="small">9 ans · 1m32 · cheveux châtains, frange<br>Anorak jaune, cartable rose<br>Vue pour la dernière fois le 13/10 à 16h30</p>
       </div>
@@ -113,7 +146,7 @@
       <div class="box">
         <h3>Archives de L'Écho</h3>
         <p class="small">Recherchez dans nos articles depuis 1952.</p>
-        <form id="f" onsubmit="return go()">
+        <form id="f" onsubmit="return X01()">
           <input id="q" placeholder="mot-clé, nom, lieu…" style="width:100%"><br>
           <button style="margin-top:6px;width:100%">Rechercher</button>
         </form>
@@ -126,7 +159,7 @@
 const ARCH = [
  {d:"08/06/1996", t:"Drame à l'étang des Noues : la petite Élise, 8 ans, retrouvée noyée",
   k:"elise fauvel noues etang noyade 1996 gerald martine ferme drame enfant",
-  b:"Le corps de la petite Élise Fauvel, 8 ans, a été retrouvé hier, vendredi 7 juin, dans l'étang qui borde la ferme familiale, au lieu-dit Les Noues. La fillette vivait avec son père, Gérald Fauvel, 34 ans, et sa tante, Martine Fauvel, qui l'élevait depuis le départ de la mère. Selon les premiers éléments, l'enfant aurait échappé à la surveillance des adultes en fin d'après-midi. « Elle voulait attraper des lucioles », a sangloté sa tante. Les obsèques auront lieu mardi en l'église de Vallombre."},
+  b:"Le corps de la petite Élise Fauvel, 8 ans, a été retrouvé hier en fin de journée dans l'étang qui borde la ferme familiale, au lieu-dit Les Noues. La fillette vivait avec son père, Gérald Fauvel, 34 ans, et sa tante, Martine Fauvel, qui l'élevait depuis le départ de la mère. Selon les premiers éléments, l'enfant aurait échappé à la surveillance des adultes en fin d'après-midi. « Elle voulait attraper des lucioles », a sangloté sa tante. Les obsèques auront lieu mardi en l'église de Vallombre."},
  {d:"14/06/1996", t:"Vallombre a dit adieu à Élise",
   k:"elise fauvel obseques eglise papillon martine gerald 1996",
   b:"Une foule nombreuse a accompagné mardi la petite Élise Fauvel jusqu'au cimetière communal. À la demande de la famille, chacun avait épinglé un papillon de papier à sa veste — « elle les adorait ». Martine Fauvel, très éprouvée, a dû être soutenue tout au long de la cérémonie. Elle aurait déclaré au prêtre : « Elle n'est pas partie. Elle reviendra à la maison. »"},
@@ -146,17 +179,18 @@ const ARCH = [
   k:"lina morel disparition tilleuls 2026 claire julien",
   b:"Une fillette de 9 ans, Lina Morel, est portée disparue depuis mardi après la sortie de l'école. La gendarmerie lance un appel à témoins."}
 ];
-const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim();
-function go(){
-  const q = norm(document.getElementById('q').value);
+const X02 = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").trim();
+function X01(){
+  const q = X02(document.getElementById('q').value);
   const r = document.getElementById('res');
   if(q.length<3){ r.innerHTML='<p class="small">Saisissez au moins 3 caractères.</p>'; return false; }
   const words = q.split(/\s+/);
-  const hits = ARCH.filter(a => words.every(w => (a.k+" "+norm(a.t)+" "+norm(a.b)).includes(w)));
+  const hits = ARCH.filter(a => words.every(w => (a.k+" "+X02(a.t)+" "+X02(a.b)).includes(w)));
   r.innerHTML = hits.length ? hits.map(a=>`<div class="hit"><div class="d">${a.d}</div><h4>${a.t}</h4><p class="small">${a.b}</p></div>`).join("")
     : '<p class="small">Aucun résultat.</p>';
   return false;
 }
 </script>
+<script src="fx.js"></script>
 </body>
 </html>

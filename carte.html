@@ -39,36 +39,36 @@
           <pattern id="water" width="1" height="1" patternUnits="userSpaceOnUse"><path d="M0 .5 q.25 -.2 .5 0 t.5 0" stroke="#5b86a8" stroke-width=".06" fill="none"/></pattern>
         </defs>
         <rect x="10" y="30" width="40" height="60" fill="#e4dfcd"/>
-        <!-- grid -->
+        
         <g id="grid"></g>
-        <!-- bois -->
+        
         <path d="M26 64 Q24 70 27 76 Q32 80 36 76 Q39 70 36 66 Q32 62 26 64Z" fill="url(#tree)" stroke="#7d9a6a" stroke-width=".1"/>
         <path d="M40 40 Q46 38 48 46 Q46 54 41 52 Q38 46 40 40Z" fill="url(#tree)" stroke="#7d9a6a" stroke-width=".1"/>
         <path d="M12 60 Q16 56 19 62 Q18 70 13 68Z" fill="url(#tree)" stroke="#7d9a6a" stroke-width=".1"/>
-        <!-- étang -->
+        
         <ellipse cx="41" cy="79" rx="3.4" ry="2.3" fill="#a9c3d6"/><ellipse cx="41" cy="79" rx="3.4" ry="2.3" fill="url(#water)"/>
-        <!-- rivière -->
+        
         <path d="M50 58 Q44 64 43 72 Q42 76 41 77" stroke="#a9c3d6" stroke-width=".5" fill="none"/>
-        <!-- routes -->
+        
         <path d="M20 36 L21 42 L24 47 L26 50 L28 55 L31 60 L30 70 L26 80 L22 90" stroke="#c9a44a" stroke-width=".8" fill="none"/>
         <path d="M20 36 L14 30" stroke="#c9a44a" stroke-width=".8" fill="none"/>
         <path d="M20 36 L22 40 L23 42 L25 44" stroke="#fff" stroke-width=".45" fill="none"/>
         <path d="M23 42 L24 47" stroke="#fff" stroke-width=".35" fill="none"/>
         <path d="M31 61 L33 63 L35 70 L36 77 L37 82" stroke="#8b7a5a" stroke-width=".3" stroke-dasharray=".6 .3" fill="none"/>
         <path d="M20 36 L30 34 L42 36" stroke="#fff" stroke-width=".35" fill="none"/>
-        <!-- bourg -->
+        
         <g fill="#9b8f7a">
           <rect x="18.6" y="34.6" width="1" height="1"/><rect x="20.4" y="34.2" width="1.2" height="1"/><rect x="21" y="36.3" width="1" height=".9"/><rect x="18.4" y="37.4" width="1.3" height="1"/><rect x="17" y="35.5" width=".9" height=".9"/>
           <rect x="22.3" y="34.8" width="1" height="1"/><rect x="16.2" y="37.8" width="1" height="1"/><rect x="24.6" y="43.4" width="1" height="1"/><rect x="26" y="44.6" width=".9" height=".9"/>
           <rect x="21.4" y="39.3" width="1.4" height="1.2" fill="#7c6f58"/>
         </g>
         <path d="M19.8 35.2 h.6 v-.6 h.3 v.6 h.6 v.3 h-.6 v.9 h-.3 v-.9 h-.6z" fill="#555"/>
-        <!-- lavoir, moulin -->
+        
         <rect x="23.7" y="46.7" width=".7" height=".5" fill="#6d8fa8"/>
         <rect x="32.7" y="62.6" width=".9" height=".9" fill="#8a7d68" stroke="#555" stroke-width=".08"/>
-        <!-- ferme isolée (non légendée) -->
+        
         <g fill="#8a7d68"><rect x="36.6" y="81.6" width="1.1" height=".8"/><rect x="37.9" y="81.9" width=".6" height=".9"/></g>
-        <!-- labels -->
+        
         <g font-family="Georgia,serif" fill="#3b3428" font-size=".85">
           <text x="15.2" y="33.4">VALLOMBRE (bourg)</text>
           <text x="22.9" y="40.2" font-size=".6">École</text>
@@ -82,7 +82,7 @@
           <text x="33.6" y="72" font-size=".45" transform="rotate(78 33.6 72)">chemin du Moulin (privé)</text>
         </g>
         <g id="pins"></g>
-        <!-- compass -->
+        
         <g transform="translate(47 33)" font-family="Georgia" font-size=".8" fill="#3b3428"><path d="M0 -1.6 L.5 0 L0 -.3 L-.5 0Z" fill="#3b3428"/><text x="-.3" y="-1.9">N</text></g>
       </svg>
     </div>
@@ -90,7 +90,7 @@
     <div class="side">
       <div class="card">
         <label>RECHERCHE PAR CARREAU (ex : VLB 22-40)</label>
-        <form class="row" onsubmit="return look()">
+        <form class="row" onsubmit="return X03()">
           <input id="q" placeholder="VLB __-__" autocomplete="off">
           <button>Chercher</button>
         </form>
@@ -100,7 +100,7 @@
       <div class="card pins">
         <div>REPÈRES PLACÉS : <span id="np">0</span></div>
         <div class="small">Un clic sur la carte ajoute un repère rouge.</div>
-        <button onclick="clearPins()">Effacer les repères</button>
+        <button onclick="X06()">Effacer les repères</button>
       </div>
     </div>
   </div>
@@ -131,30 +131,31 @@ const P = [
  {x:41,y:79,t:"Étang des Noues",d:{"Parcelle":"B-215","Propriétaire":"FAUVEL (indivision)","Remarque":"Plongeurs le 15/10 — RAS. Panneau « propriété privée — baignade interdite »."}},
  {x:37,y:82,t:"Lieu-dit Les Noues — ferme",d:{"Parcelle":"B-214","Propriétaires":"FAUVEL Gérald · FAUVEL Martine (indivision)","Acquis":"1989","Statut fiscal":"Bâti déclaré VACANT depuis 1997","Relevé électrique":"⚠ consommation en hausse continue depuis août 2026","Fouille":"NON — en attente de commission rogatoire"},hot:1}
 ];
-function find(x,y){let best=null,bd=9;for(const p of P){const d=Math.hypot(p.x-x,p.y-y);if(d<=1.5&&d<bd){bd=d;best=p}}return best}
-function show(x,y){
-  const p=find(x,y), ref=`VLB ${x}-${y}`;
+function X01(x,y){let best=null,bd=9;for(const p of P){const d=Math.hypot(p.x-x,p.y-y);if(d<=1.5&&d<bd){bd=d;best=p}}return best}
+function X02(x,y){
+  const p=X01(x,y), ref=`VLB ${x}-${y}`;
   const el=document.getElementById('info');
   if(!p){el.innerHTML=`<div class="ref">${ref}</div><h3>Parcelle agricole / non bâtie</h3><span class="small dim">Aucune information particulière.</span>`;return}
   el.innerHTML=`<div class="ref">${ref}${(p.x!==x||p.y!==y)?` → plus proche : VLB ${p.x}-${p.y}`:''}</div><h3${p.hot?' class="red glitch"':''}>${p.t}</h3><table>${Object.entries(p.d).map(([a,b])=>`<tr><td>${a}</td><td>${b}</td></tr>`).join('')}</table>`;
 }
-function look(){
+function X03(){
   const m=document.getElementById('q').value.match(/(\d{1,2})\s*[-\/ .,]\s*(\d{1,2})/);
   if(!m){document.getElementById('info').innerHTML='<span class="small red">Format attendu : VLB 22-40</span>';return false}
-  const x=+m[1],y=+m[2]; show(x,y); pin(x,y); return false;
+  const x=+m[1],y=+m[2]; X02(x,y); X04(x,y); return false;
 }
 let pins=[];
-function pin(x,y){pins.push([x,y]);drawPins()}
-function drawPins(){
+function X04(x,y){pins.push([x,y]);X05()}
+function X05(){
   document.getElementById('pins').innerHTML = (pins.length>1?`<polyline points="${pins.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#b3261e" stroke-width=".15" stroke-dasharray=".4 .25"/>`:'')+
    pins.map((p,i)=>`<g><circle cx="${p[0]}" cy="${p[1]}" r=".45" fill="#b3261e" stroke="#fff" stroke-width=".1"/><text x="${p[0]+.6}" y="${p[1]-.4}" font-size=".6" fill="#b3261e" font-family="monospace">${i+1}</text></g>`).join('');
   document.getElementById('np').textContent=pins.length;
 }
-function clearPins(){pins=[];drawPins()}
+function X06(){pins=[];X05()}
 const svgEl=document.getElementById('map');
-function toGrid(e){const pt=svgEl.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const q=pt.matrixTransform(svgEl.getScreenCTM().inverse());return [Math.round(q.x),Math.round(q.y)]}
-svgEl.addEventListener('mousemove',e=>{const [x,y]=toGrid(e);document.getElementById('hover').textContent=`VLB ${x}-${y}`});
-svgEl.addEventListener('click',e=>{const [x,y]=toGrid(e);document.getElementById('q').value=`VLB ${x}-${y}`;show(x,y);pin(x,y)});
+function X07(e){const pt=svgEl.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;const q=pt.matrixTransform(svgEl.getScreenCTM().inverse());return [Math.round(q.x),Math.round(q.y)]}
+svgEl.addEventListener('mousemove',e=>{const [x,y]=X07(e);document.getElementById('hover').textContent=`VLB ${x}-${y}`});
+svgEl.addEventListener('click',e=>{const [x,y]=X07(e);document.getElementById('q').value=`VLB ${x}-${y}`;X02(x,y);X04(x,y)});
 </script>
+<script src="fx.js"></script>
 </body>
 </html>

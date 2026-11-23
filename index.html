@@ -21,7 +21,7 @@
   .warn{margin-top:40px;font-size:11px;color:#555;text-align:center}
 </style>
 </head>
-<body>
+<body data-warn>
 <div class="wrap">
   <h1>// TRANSFERT ANONYME — 3 FICHIERS DÉCHIFFRÉS — 1 NON LU</h1>
   <div class="term" id="term"></div>
@@ -62,21 +62,22 @@ const lines = [
 ];
 const term = document.getElementById('term');
 let i=0,j=0,out="";
-const skip = (()=>{try{return sessionStorage.getItem('intro')}catch(e){return null}})();
-function done(){
+const X03 = (()=>{try{return sessionStorage.getItem('intro')}catch(e){return null}})();
+function X01(){
   term.innerHTML = out + '<span class="cur"></span>';
   const f=document.getElementById('files'); f.classList.add('show');
   try{sessionStorage.setItem('intro','1')}catch(e){}
 }
-if(skip){ out = lines.join("\n"); done(); }
-else (function type(){
-  if(i>=lines.length){ done(); return; }
+if(X03){ out = lines.join("\n"); X01(); }
+else (function X02(){
+  if(i>=lines.length){ X01(); return; }
   if(j<=lines[i].length){
     term.innerHTML = out + lines[i].slice(0,j) + '<span class="cur"></span>';
-    j++; setTimeout(type, lines[i].startsWith('>')?18:28);
-  } else { out += lines[i] + "\n"; i++; j=0; setTimeout(type, lines[i-1]===""?350:120); }
+    j++; setTimeout(X02, lines[i].startsWith('>')?18:28);
+  } else { out += lines[i] + "\n"; i++; j=0; setTimeout(X02, lines[i-1]===""?350:120); }
 })();
 document.addEventListener('keydown',e=>{ if(e.key==='Escape' && i<lines.length){ i=lines.length; out=lines.join("\n"); }});
 </script>
+<script src="fx.js"></script>
 </body>
 </html>

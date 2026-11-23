@@ -26,7 +26,7 @@
   <a class="back" href="index.html">← retour au dossier</a>
   <div class="box" id="form">
     <p>Tu crois savoir ?<br><span class="dim small">Une seule chance de les surprendre. Après, ils sauront que tu sais.</span></p>
-    <form onsubmit="return check()">
+    <form onsubmit="return X01()">
       <label>QUI L'A EMMENÉE ? (prénom et nom de chaque personne)</label>
       <input id="who" autocomplete="off" placeholder="…">
       <label>OÙ EST-ELLE ? (lieu-dit ou carreau VLB)</label>
@@ -41,14 +41,14 @@
 <div class="notif" id="notif"><div class="av">🦋</div><div><b>Élise 🦋</b><div class="m" id="nm"></div></div><span class="t">maintenant</span></div>
 
 <script>
-const H = s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))>>>0;return h};
+const X05 = s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))>>>0;return h};
 const K = {g:334416712, m:1448828521, n:3532862211, f:290668092};
-const norm = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9 -]/g," ");
+const X06 = s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9 -]/g," ");
 let tries=0;
-function check(){
-  const who=norm(document.getElementById('who').value), wh=norm(document.getElementById('where').value);
-  const ws=new Set(who.split(/[\s-]+/).filter(Boolean).map(w=>H("arg:"+w)));
-  const wl=new Set(wh.split(/[\s-]+/).filter(Boolean).map(w=>H("arg:"+w)));
+function X01(){
+  const who=X06(document.getElementById('who').value), wh=X06(document.getElementById('where').value);
+  const ws=new Set(who.split(/[\s-]+/).filter(Boolean).map(w=>X05("arg:"+w)));
+  const wl=new Set(wh.split(/[\s-]+/).filter(Boolean).map(w=>X05("arg:"+w)));
   const g=ws.has(K.g), m=ws.has(K.m), f=ws.has(K.f);
   const place = wl.has(K.n) || /37\D+82/.test(wh) || /b\s*-?\s*214/.test(wh);
   const fb=document.getElementById('fb'); tries++;
@@ -56,7 +56,7 @@ function check(){
   if(/julien|morel/.test(who)) msg.push("✗ Julien Morel : badgé à Saint-Aubert jusqu'à 18h41. Relis le PV.");
   if(/kevin|brault/.test(who)) msg.push("✗ Kévin Brault : filmé en terrasse du Relais de 16h22 à 19h05.");
   if(/elise/.test(who)) msg.push("✗ Élise ne peut emmener personne. Elle est morte en 1996.\n  …n'est-ce pas ?");
-  if(g&&m&&place){ win(); return false; }
+  if(g&&m&&place){ X03(); return false; }
   if(!msg.length){
     if((g||m||f)&&!(g&&m)) msg.push("~ Tu tiens un fil. Mais la témoin a vu un conducteur ET une passagère. Ils étaient deux. Il faut leurs deux prénoms.");
     else if(g&&m&&!place) msg.push("✓ Les noms sont bons.\n✗ Mais ce n'est pas là qu'elle est. La photo sait où c'est.");
@@ -64,10 +64,10 @@ function check(){
     else msg.push("✗ Rien ne colle. Retourne dans le téléphone. Lis tout. Même ce qui a été supprimé.");
   }
   fb.innerHTML = '<span class="'+(msg[0].startsWith('✗')?'red':'')+'">'+msg.join("\n")+'</span>';
-  if(tries===3) notify("tu cherches mal 🦋",4000);
+  if(tries===3) X02("tu cherches mal 🦋",4000);
   return false;
 }
-function notify(t,ms){const n=document.getElementById('notif');document.getElementById('nm').textContent=t;n.classList.add('on');setTimeout(()=>n.classList.remove('on'),ms)}
+function X02(t,ms){const n=document.getElementById('notif');document.getElementById('nm').textContent=t;n.classList.add('on');setTimeout(()=>n.classList.remove('on'),ms)}
 const END = [
 "> transmission aux enquêteurs... OK",
 "> commission rogatoire accordée en urgence... OK",
@@ -101,16 +101,18 @@ const END = [
 "",
 "                — DOSSIER CLOS —"
 ];
-function win(){
+function X03(){
   document.getElementById('form').style.display='none';
   const e=document.getElementById('end'); e.style.display='block';
   let i=0,j=0,out="";
-  (function type(){
-    if(i>=END.length){ setTimeout(()=>notify("merci de l'avoir ramenée. tu veux être mon amie toi aussi ?",9000),2500); setTimeout(()=>{document.title="🦋";},12000); return; }
-    if(j<=END[i].length){ e.textContent=out+END[i].slice(0,j); j++; setTimeout(type,24); }
-    else { out+=END[i]+"\n"; i++; j=0; setTimeout(type,END[i-1]===""?500:160); }
+  (function X04(){
+    if(i>=END.length){ setTimeout(()=>X02("merci de l'avoir ramenée. tu veux être mon amie toi aussi ?",9000),2500); setTimeout(()=>{document.title="🦋";},12000); return; }
+    if(j<=END[i].length){ e.textContent=out+END[i].slice(0,j); j++; setTimeout(X04,24); }
+    else { out+=END[i]+"\n"; i++; j=0; setTimeout(X04,END[i-1]===""?500:160); }
   })();
 }
 </script>
+<script>window.MOOD='tension'</script>
+<script src="fx.js"></script>
 </body>
 </html>

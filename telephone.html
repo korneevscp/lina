@@ -95,26 +95,26 @@
         <div class="clock">17:04</div>
         <div class="date">mardi 13 octobre</div>
         <div class="apps">
-          <button class="app" onclick="openV('msgs')"><div class="i badge" data-n="7" style="background:#2fbf5a">💬</div>Messages</button>
-          <button class="app" onclick="openV('photos')"><div class="i" style="background:linear-gradient(135deg,#ffcc4d,#ff6b6b,#7a5cff)">🌼</div>Photos</button>
-          <button class="app" onclick="openV('loc')"><div class="i" style="background:#2f6fe0">📍</div>Localiser</button>
-          <button class="app" onclick="openV('calls')"><div class="i badge" data-n="14" style="background:#2fbf5a">📞</div>Appels</button>
-          <button class="app" onclick="openV('notes')"><div class="i" style="background:#f2c94c">📝</div>Notes</button>
+          <button class="app" onclick="X14('msgs')"><div class="i badge" data-n="7" style="background:#2fbf5a">💬</div>Messages</button>
+          <button class="app" onclick="X14('photos')"><div class="i" style="background:linear-gradient(135deg,#ffcc4d,#ff6b6b,#7a5cff)">🌼</div>Photos</button>
+          <button class="app" onclick="X14('loc')"><div class="i" style="background:#2f6fe0">📍</div>Localiser</button>
+          <button class="app" onclick="X14('calls')"><div class="i badge" data-n="14" style="background:#2fbf5a">📞</div>Appels</button>
+          <button class="app" onclick="X14('notes')"><div class="i" style="background:#f2c94c">📝</div>Notes</button>
           <button class="app" onclick="alert('Appareil photo désactivé (mode extraction).')"><div class="i" style="background:#444">📷</div>Caméra</button>
         </div>
       </div>
 
-      <div class="view" id="msgs"><div class="hdr"><button onclick="home()">‹ Accueil</button>Messages</div><div class="list" id="msglist"></div></div>
-      <div class="view" id="thread"><div class="hdr"><button onclick="openV('msgs')">‹</button><span id="thname"></span></div><div class="chat" id="chat"></div></div>
-      <div class="view" id="photos"><div class="hdr"><button onclick="home()">‹ Accueil</button>Photos</div><div id="photogrid"></div></div>
-      <div class="view" id="loc"><div class="hdr"><button onclick="home()">‹ Accueil</button>Localiser — historique</div><div class="loc" id="loclist"></div></div>
-      <div class="view calls" id="calls"><div class="hdr"><button onclick="home()">‹ Accueil</button>Appels récents</div><div class="list" id="calllist"></div></div>
-      <div class="view" id="notes"><div class="hdr"><button onclick="home()">‹ Accueil</button>Notes</div><div id="notesbody"></div></div>
+      <div class="view" id="msgs"><div class="hdr"><button onclick="X15()">‹ Accueil</button>Messages</div><div class="list" id="msglist"></div></div>
+      <div class="view" id="thread"><div class="hdr"><button onclick="X14('msgs')">‹</button><span id="thname"></span></div><div class="chat" id="chat"></div></div>
+      <div class="view" id="photos"><div class="hdr"><button onclick="X15()">‹ Accueil</button>Photos</div><div id="photogrid"></div></div>
+      <div class="view" id="loc"><div class="hdr"><button onclick="X15()">‹ Accueil</button>Localiser — historique</div><div class="loc" id="loclist"></div></div>
+      <div class="view calls" id="calls"><div class="hdr"><button onclick="X15()">‹ Accueil</button>Appels récents</div><div class="list" id="calllist"></div></div>
+      <div class="view" id="notes"><div class="hdr"><button onclick="X15()">‹ Accueil</button>Notes</div><div id="notesbody"></div></div>
 
       <div class="modal" id="modal">
-        <div class="mh"><button onclick="closeM()">‹ Retour</button><span id="mname"></span><span></span></div>
+        <div class="mh"><button onclick="X05()">‹ Retour</button><span id="mname"></span><span></span></div>
         <div class="pic" id="mpic"></div>
-        <button class="mb" onclick="toggleMeta()">ⓘ Afficher les métadonnées (EXIF)</button>
+        <button class="mb" onclick="X04()">ⓘ Afficher les métadonnées (EXIF)</button>
         <div class="meta" id="mmeta"></div>
       </div>
     </div>
@@ -122,10 +122,10 @@
 </div>
 
 <script>
-/* ---------- IMAGES (SVG) ---------- */
-function grain(id){return `<filter id="${id}"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .35 0" result="m"/><feComposite in="m" in2="SourceGraphic" operator="in" result="c"/><feBlend in="SourceGraphic" in2="c" mode="overlay"/></filter>`}
+
+function X01(id){return `<filter id="${id}"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .35 0" result="m"/><feComposite in="m" in2="SourceGraphic" operator="in" result="c"/><feBlend in="SourceGraphic" in2="c" mode="overlay"/></filter>`}
 const IMG = {
-dessin: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${grain(p)}</defs><g filter="url(#${p})">
+dessin: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${X01(p)}</defs><g filter="url(#${p})">
  <rect width="300" height="300" fill="#f4efe2"/>
  <circle cx="255" cy="45" r="22" fill="none" stroke="#f2b705" stroke-width="4"/><g stroke="#f2b705" stroke-width="3"><path d="M255 12v-8M288 45h8M232 22l-6-6M278 22l6-6"/></g>
  <path d="M20 250 H280" stroke="#4caf50" stroke-width="5"/>
@@ -141,7 +141,7 @@ dessin: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>
  <g transform="translate(140 92)"><path d="M0 0 q-14 -16 -20 -2 q6 10 20 2 q14 -16 20 -2 q-6 10 -20 2Z" fill="#3a6fe0"/></g>
  <text x="118" y="282" font-family="Comic Sans MS,cursive" font-size="18" fill="#2f6fe0">élise</text>
  </g></svg>`,
-balancoire: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${grain(p)}<linearGradient id="${p}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9c3cc"/><stop offset="1" stop-color="#e3e6e8"/></linearGradient></defs><g filter="url(#${p})">
+balancoire: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${X01(p)}<linearGradient id="${p}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9c3cc"/><stop offset="1" stop-color="#e3e6e8"/></linearGradient></defs><g filter="url(#${p})">
  <rect width="300" height="300" fill="url(#${p}s)"/>
  <rect y="190" width="300" height="110" fill="#8e8a82"/>
  <g fill="#5c7a4c"><circle cx="30" cy="120" r="40"/><circle cx="270" cy="110" r="45"/></g><rect x="26" y="140" width="8" height="60" fill="#4a3a2a"/><rect x="266" y="140" width="8" height="60" fill="#4a3a2a"/>
@@ -152,7 +152,7 @@ balancoire: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><d
  <g stroke="#444" stroke-width="2"><path d="M120 120 V230M150 120 V230"/></g><rect x="112" y="228" width="46" height="8" fill="#2f2a24"/>
  <text x="8" y="292" font-family="monospace" font-size="10" fill="#fff" opacity=".7">10/09 16:34</text>
  </g></svg>`,
-chat: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${grain(p)}</defs><g filter="url(#${p})">
+chat: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${X01(p)}</defs><g filter="url(#${p})">
  <rect width="300" height="300" fill="#6b4f6e"/><rect y="170" width="300" height="130" fill="#3e2f45"/>
  <ellipse cx="150" cy="190" rx="80" ry="50" fill="#e08a3c"/><circle cx="210" cy="150" r="38" fill="#e08a3c"/>
  <path d="M185 125 L190 92 L208 118Z M212 116 L232 92 L236 128Z" fill="#e08a3c"/>
@@ -160,7 +160,7 @@ chat: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${
  <path d="M72 200 q-40 10 -30 50" stroke="#e08a3c" stroke-width="14" fill="none" stroke-linecap="round"/>
  <g stroke="#b5622a" stroke-width="5"><path d="M120 160 v30M140 155 v35M160 158 v30"/></g>
  </g></svg>`,
-chambre: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${grain(p)}<pattern id="${p}w" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#6e5a4a"/><circle cx="12" cy="12" r="4" fill="#8a6f5a"/><circle cx="0" cy="0" r="3" fill="#7d6352"/><circle cx="24" cy="24" r="3" fill="#7d6352"/></pattern><radialGradient id="${p}l" cx=".45" cy=".35" r=".8"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient></defs><g filter="url(#${p})">
+chambre: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${X01(p)}<pattern id="${p}w" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#6e5a4a"/><circle cx="12" cy="12" r="4" fill="#8a6f5a"/><circle cx="0" cy="0" r="3" fill="#7d6352"/><circle cx="24" cy="24" r="3" fill="#7d6352"/></pattern><radialGradient id="${p}l" cx=".45" cy=".35" r=".8"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient></defs><g filter="url(#${p})">
  <rect width="300" height="300" fill="url(#${p}w)"/>
  <rect y="215" width="300" height="85" fill="#3a2a20"/>
  <rect x="205" y="40" width="70" height="90" fill="#0b0d12" stroke="#d8d0c0" stroke-width="5"/><path d="M240 40v90M205 85h70" stroke="#d8d0c0" stroke-width="4"/>
@@ -175,7 +175,7 @@ chambre: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs
  <g transform="translate(250 150)"><path d="M0 0 v8" stroke="#555" stroke-width="2"/><path d="M-16 8 h32 l6 60 h-44z" fill="#ffd400"/><path d="M-16 8 l-8 30M16 8 l8 30" stroke="#ffd400" stroke-width="9"/></g>
  <rect width="300" height="300" fill="url(#${p}l)"/>
  </g></svg>`,
-toi: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${grain(p)}<filter id="${p}b"><feGaussianBlur stdDeviation="1.4"/></filter></defs><g filter="url(#${p})">
+toi: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${X01(p)}<filter id="${p}b"><feGaussianBlur stdDeviation="1.4"/></filter></defs><g filter="url(#${p})">
  <rect width="300" height="300" fill="#9fa6a8"/><rect y="200" width="300" height="100" fill="#7c7a74"/>
  <g filter="url(#${p}b)"><g transform="translate(170 150)"><circle r="12" fill="#5a3a1a"/><path d="M-16 10 h32 l8 50 h-48z" fill="#ffd400"/><rect x="-14" y="14" width="28" height="30" rx="4" fill="#ff7eb6"/><path d="M-9 60 v26M9 60 v26" stroke="#334" stroke-width="7"/></g>
  <g transform="translate(60 160) scale(.8)"><circle r="12" fill="#c9a37a"/><path d="M-14 10 h28 l6 46 h-40z" fill="#7a3a8a"/></g></g>
@@ -183,32 +183,32 @@ toi: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${g
  <rect width="300" height="300" fill="#000" opacity=".15"/>
  </g></svg>`
 };
-let uid=0; const svg = k => IMG[k]('g'+(uid++));
+let uid=0; const X16 = k => IMG[k]('g'+(uid++));
 
-/* ---------- PHOTOS + EXIF ---------- */
+
 const PHOTOS = [
  {k:"dessin", n:"IMG_0412.jpg", sec:"Pellicule", exif:{"Fichier":"IMG_0412.jpg","Date de prise":"2026:09:02 18:47:10","Appareil":"KidFone K3 (téléphone de la victime)","Dimensions":"3264 × 2448","Position GPS":"VLB 25-44","Commentaire":"—"}},
  {k:"balancoire", n:"IMG_0419.jpg", sec:"Pellicule", exif:{"Fichier":"IMG_0419.jpg","Date de prise":"2026:09:10 16:34:52","Appareil":"KidFone K3 (téléphone de la victime)","Dimensions":"3264 × 2448","Position GPS":"VLB 22-40","Commentaire":"—"}},
  {k:"chat", n:"IMG_0427.jpg", sec:"Pellicule", exif:{"Fichier":"IMG_0427.jpg","Date de prise":"2026:09:20 19:03:31","Appareil":"KidFone K3 (téléphone de la victime)","Dimensions":"3264 × 2448","Position GPS":"VLB 25-44","Commentaire":"—"}},
- {k:"chambre", n:"chambre.jpg", sec:"Reçues (Messages)", exif:{"Fichier":"chambre.jpg","Reçue de":"Élise 🦋 — 07/10/2026 20:02","Date de prise":"2026:10:06 19:12:44","Marque":"samsung","Modèle":"SM-A125F","Logiciel":"A125FXXU2BUG1","Artist":"Martine F.","Dimensions":"4000 × 3000","Position GPS":"VLB 37-82","Altitude":"212 m","Commentaire":"elle revient bientot"}},
- {k:"toi", n:"toi.jpg", sec:"Supprimés récemment", del:true, exif:{"Fichier":"toi.jpg","Reçue de":"Élise 🦋 — 16/09/2026 22:10","Supprimée le":"16/09/2026 22:14 (par l'utilisatrice)","Date de prise":"2026:09:16 15:58:03","Marque":"samsung","Modèle":"SM-A125F","Logiciel":"A125FXXU2BUG1","Artist":"Martine F.","Position GPS":"VLB 22-41","Commentaire":"notre jaune"}}
+ {k:"chambre", n:"chambre.jpg", sec:"Reçues (Messages)", exif:{"Fichier":"chambre.jpg","Reçue de":"Élise 🦋 — 07/10/2026 20:02","Date de prise":"2026:10:06 19:12:44","Marque":"samsung","Modèle":"SM-A125F","Logiciel":"A125FXXU2BUG1","Artist":"M.F.","Dimensions":"4000 × 3000","Position GPS":"[champ effacé]","Altitude":"212 m","MakerNote (hex)":"56 4C 42 20 33 37 2D 38 32","Commentaire":"elle revient bientot"}},
+ {k:"toi", n:"toi.jpg", sec:"Supprimés récemment", del:true, exif:{"Fichier":"toi.jpg","Reçue de":"Élise 🦋 — 16/09/2026 22:10","Supprimée le":"16/09/2026 22:14 (par l'utilisatrice)","Date de prise":"2026:09:16 15:58:03","Marque":"samsung","Modèle":"SM-A125F","Logiciel":"A125FXXU2BUG1","Artist":"M.F.","Position GPS":"VLB 22-41","Commentaire":"notre jaune"}}
 ];
-function renderPhotos(){
+function X02(){
   const secs = [...new Set(PHOTOS.map(p=>p.sec))];
-  document.getElementById('photogrid').innerHTML = secs.map(s=>`<div class="sec">${s}${s==='Supprimés récemment'?' · 1 élément':''}</div><div class="grid">${PHOTOS.map((p,i)=>p.sec===s?`<div class="th" onclick="showPhoto(${i})" style="${p.del?'opacity:.55':''}">${svg(p.k)}</div>`:'').join('')}</div>`).join('');
+  document.getElementById('photogrid').innerHTML = secs.map(s=>`<div class="sec">${s}${s==='Supprimés récemment'?' · 1 élément':''}</div><div class="grid">${PHOTOS.map((p,i)=>p.sec===s?`<div class="th" onclick="X03(${i})" style="${p.del?'opacity:.55':''}">${X16(p.k)}</div>`:'').join('')}</div>`).join('');
 }
-function showPhoto(i){
+function X03(i){
   const p=PHOTOS[i];
   document.getElementById('mname').textContent=p.n;
-  document.getElementById('mpic').innerHTML=svg(p.k);
+  document.getElementById('mpic').innerHTML=X16(p.k);
   const m=document.getElementById('mmeta'); m.style.display='none';
   m.innerHTML='<table>'+Object.entries(p.exif).map(([a,b])=>`<tr><td>${a}</td><td>${b}</td></tr>`).join('')+'</table>';
   document.getElementById('modal').classList.add('on');
 }
-function toggleMeta(){const m=document.getElementById('mmeta');m.style.display=m.style.display==='block'?'none':'block'}
-function closeM(){document.getElementById('modal').classList.remove('on')}
+function X04(){const m=document.getElementById('mmeta');m.style.display=m.style.display==='block'?'none':'block'}
+function X05(){document.getElementById('modal').classList.remove('on')}
 
-/* ---------- MESSAGES ---------- */
+
 const T = {
  maman:{name:"Maman ❤️",av:"👩",c:"#c94f6d",msgs:[
   ["d","Lundi 12 octobre"],
@@ -280,27 +280,27 @@ const T = {
   ["ghost","je ne suis plus toute seule 🦋","03:33"]]}
 };
 const ORDER=["elise","maman","papa","ines"];
-function renderList(){
+function X06(){
   document.getElementById('msglist').innerHTML = ORDER.map(k=>{const t=T[k];const last=[...t.msgs].reverse().find(m=>m[0]!=="d"&&m[0]!=="sys");
-    return `<div class="row" onclick="openT('${k}')"><div class="av" style="background:${t.c}">${t.av}</div><div><div class="nm">${t.name}</div><div class="pv">${last[0]==='img'?'📷 Photo':last[0]==='voice'?'🎤 Message vocal':last[1]}</div></div><div class="tm">${last[last.length-1]}</div></div>`}).join('');
+    return `<div class="row" onclick="X08('${k}')"><div class="av" style="background:${t.c}">${t.av}</div><div><div class="nm">${t.name}</div><div class="pv">${last[0]==='img'?'📷 Photo':last[0]==='voice'?'🎤 Message vocal':last[1]}</div></div><div class="tm">${last[last.length-1]}</div></div>`}).join('');
 }
-function esc(s){return s.replace(/</g,"&lt;")}
-function openT(k){
+function X07(s){return s.replace(/</g,"&lt;")}
+function X08(k){
   const t=T[k]; document.getElementById('thname').textContent=t.name;
   document.getElementById('chat').innerHTML = t.msgs.map((m,i)=>{
     switch(m[0]){
       case "d": return `<div class="day">${m[1]}</div>`;
       case "sys": return `<div class="sys">${m[1]}</div>`;
-      case "img": return `<div class="b in"><span class="imgmsg" onclick="showPhoto(3)">${svg(m[1])}</span><span class="t">${m[2]}</span></div>`;
+      case "img": return `<div class="b in"><span class="imgmsg" onclick="X03(3)">${X16(m[1])}</span><span class="t">${m[2]}</span></div>`;
       case "voice": return `<div class="b in"><div class="voice" onclick="this.nextElementSibling.style.display='block'">▶ <span class="w"></span> ${m[1]}</div><div class="tr">${m[2]}</div><span class="t">${m[3]}</span></div>`;
-      case "ghost": return `<div class="b in ghost">${esc(m[1])}<span class="t">${m[2]}</span></div>`;
-      default: return `<div class="b ${m[0]}">${esc(m[1])}<span class="t">${m[2]}</span></div>`;
+      case "ghost": return `<div class="b in ghost">${X07(m[1])}<span class="t">${m[2]}</span></div>`;
+      default: return `<div class="b ${m[0]}">${X07(m[1])}<span class="t">${m[2]}</span></div>`;
     }}).join('');
-  openV('thread');
+  X14('thread');
   const v=document.getElementById('thread'); v.scrollTop=v.scrollHeight;
 }
 
-/* ---------- LOCALISATION ---------- */
+
 const LOC = [
  ["d","Lundi 12 octobre"],
  ["08:21","VLB 25-44","Domicile","—"],["08:29","VLB 22-40","École Les Tilleuls","à pied"],["16:39","VLB 25-44","Domicile","à pied"],
@@ -315,14 +315,14 @@ const LOC = [
  ["17:02","VLB 31-60","—","véhicule · 31 km/h"],
  ["17:04","VLB 31-61","—","immobile · signal perdu",1]
 ];
-function renderLoc(){
+function X09(){
   document.getElementById('loclist').innerHTML = `<div class="note">Contrôle parental « FamilleZen » — précision ± 15 m. Les positions sont exprimées dans le carroyage cadastral communal (VLB colonne-ligne).</div>` +
    LOC.map(l=> l[0]==="d" ? `<div class="sec">${l[1]}</div>` :
     `<div class="it${l[4]?' last':''}"><span class="h">${l[0]}</span><span><span class="g">${l[1]}</span>${l[2]!=='—'?' · '+l[2]:''}<br><span class="dim small">${l[3]}</span></span></div>`).join('') +
    `<div class="note">⚠ Aucune position après 17:04. Dernière direction de déplacement : sud-est.<br>➜ <a href="carte.html" target="_blank">Ouvrir le cadastre communal</a></div>`;
 }
 
-/* ---------- APPELS ---------- */
+
 const CALLS = [
  ["Maman ❤️","13/10 23:12",1,"manqué"],["Maman ❤️","13/10 19:30",1,"manqué"],["Papa","13/10 18:52",1,"manqué"],["Maman ❤️","13/10 18:20",1,"manqué"],
  ["Maman ❤️","13/10 18:01",1,"manqué"],["Maman ❤️","13/10 17:41",1,"manqué"],["Maman ❤️","13/10 17:22",1,"manqué"],
@@ -330,30 +330,29 @@ const CALLS = [
  ["Élise 🦋","25/09 23:50",0,"entrant · 0:00 — messagerie"],
  ["Papa","10/10 19:10",0,"sortant · 6:32"],["Maman ❤️","12/10 12:15",0,"entrant · 1:02"]
 ];
-function renderCalls(){
+function X10(){
   document.getElementById('calllist').innerHTML = CALLS.map(c=>`<div class="row"><div class="av" style="background:#333">📞</div><div><div class="nm ${c[2]?'miss':''}">${c[0]}</div><div class="pv">${c[3]}</div></div><div class="tm">${c[1]}</div></div>`).join('') +
   `<div class="note small dim" style="padding:12px 14px">+ 7 appels manqués supplémentaires après 23:12 (Maman ❤️, Papa, numéro masqué)</div>`;
 }
 
-/* ---------- NOTES (verrouillé) ---------- */
+
 let code="";
-const H = s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))>>>0;return h};
-const NOTE_KEY = 2181916214; // hash du code
-function renderLock(){
+const X17 = s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))>>>0;return h};
+const NOTE_KEY = 2181916214;
+function X11(){
   document.getElementById('notesbody').innerHTML = `<div class="lock" id="lockbox"><div style="font-size:34px">🔒</div><div>Notes protégées</div><div class="small dim">Saisis ton code secret</div>
   <div class="dots">${[0,1,2,3].map(i=>`<span class="${i<code.length?'f':''}"></span>`).join('')}</div>
-  <div class="pad">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>n===''?'<span></span>':`<button onclick="key('${n}')">${n}</button>`).join('')}</div>
-  <div class="small dim" style="margin-top:18px">indice enregistré : « le jour où elle est allée dans l'eau »</div></div>`;
+  <div class="pad">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>n===''?'<span></span>':`<button onclick="X12('${n}')">${n}</button>`).join('')}</div></div>`;
 }
-function key(n){
-  if(n==='⌫'){code=code.slice(0,-1);renderLock();return}
-  code+=n; renderLock();
+function X12(n){
+  if(n==='⌫'){code=code.slice(0,-1);X11();return}
+  code+=n; X11();
   if(code.length===4){
-    if(H("vlb"+code)===NOTE_KEY){ showNotes(); }
-    else { const b=document.getElementById('lockbox'); b.classList.add('shake'); setTimeout(()=>{code="";renderLock()},450); }
+    if(X17("vlb"+code)===NOTE_KEY){ X13(); }
+    else { const b=document.getElementById('lockbox'); b.classList.add('shake'); setTimeout(()=>{code="";X11()},450); }
   }
 }
-function showNotes(){
+function X13(){
   document.getElementById('notesbody').innerHTML = `<div class="note-body">
 <h4>📝 mon secret — 01/10/2026</h4>élise c'est mon amie secrète. personne la connaît à l'école, même pas la maîtresse. c'est normal elle dit, ça fait longtemps qu'elle y va plus.
 
@@ -362,7 +361,14 @@ son papa c'est le monsieur qui répare la balançoire. il a une camionnette blan
 sa tante c'est la dame des madeleines de la kermesse. elle m'a fait un câlin trop long une fois.
 <hr><h4>📝 08/10/2026</h4>élise dit que sa maison c'est loin du village, après le vieux moulin, près de l'étang. il y a des lucioles toute l'année elle dit.
 
-j'ai demandé l'adresse elle a dit "tu as la photo, la photo sait où c'est". je comprends pas.
+j'ai demandé l'adresse elle a dit "tu as la photo, la photo sait où c'est". je comprends pas. y a rien d'écrit sur la photo.
+<hr><h4>📝 10/10/2026</h4>élise m'a donné un mot magique. elle dit que si je l'écris avec .html à la fin je pourrai voir sa chambre "en vrai", même la nuit.
+mais le mot il est caché. elle l'a écrit comme ça :
+
+        Q E G K P L I
+
+elle dit "demande à monsieur Vigenère. la clé c'est ce que je suis 🦋"
+je connais pas de monsieur vigenère.
 <hr><h4>📝 12/10/2026</h4>j'ai un peu peur.
 élise elle répond toujours très vite, même la nuit. même à l'école quand c'est la récré et que je la vois pas.
 et sa chambre elle a l'air vieille. mais elle a dit que c'est la mienne maintenant.
@@ -372,11 +378,13 @@ demain je vais voir. si c'est bizarre je rentre.
 </div>`;
 }
 
-/* ---------- NAV ---------- */
-function openV(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));document.getElementById(id).classList.add('on');closeM();
-  if(id==='notes'){code="";renderLock();}}
-function home(){openV('home')}
-renderList();renderPhotos();renderLoc();renderCalls();
+
+function X14(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));document.getElementById(id).classList.add('on');X05();
+  if(id==='notes'){code="";X11();}}
+function X15(){X14('home')}
+X06();X02();X09();X10();
 </script>
+<script>window.MOOD='tension'</script>
+<script src="fx.js"></script>
 </body>
 </html>
