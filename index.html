@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dossier Lina</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body{font-family:var(--mono)}
+  .term{background:#050505;border:1px solid #1f1f1f;border-radius:6px;padding:22px;min-height:300px;white-space:pre-wrap;font-size:15px;color:#b9b5ab}
+  .term .cur{display:inline-block;width:9px;height:17px;background:#b9b5ab;vertical-align:-3px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .files{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;opacity:0;pointer-events:none;transition:opacity 1.5s}
+  .files.show{opacity:1;pointer-events:auto}
+  .file{display:block;text-decoration:none;color:var(--txt);background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:16px;transition:.2s}
+  .file:hover{border-color:var(--red);transform:translateY(-2px);color:#fff}
+  .file .ic{font-size:26px}
+  .file b{display:block;margin:6px 0 2px}
+  .file span{font-size:12px;color:var(--dim)}
+  h1{font-size:13px;letter-spacing:.3em;color:var(--dim);font-weight:normal;margin:0 0 14px}
+  .warn{margin-top:40px;font-size:11px;color:#555;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>// TRANSFERT ANONYME — 3 FICHIERS DÉCHIFFRÉS — 1 NON LU</h1>
+  <div class="term" id="term"></div>
+
+  <div class="files" id="files">
+    <a class="file" href="journal.html"><div class="ic">📰</div><b>echo_vallombre.html</b><span>Presse locale — article + archives</span></a>
+    <a class="file" href="rapport.html"><div class="ic">📁</div><b>PV_2026-1013-VLB.pdf</b><span>Rapport d'enquête — brigade de Vallombre</span></a>
+    <a class="file" href="telephone.html"><div class="ic">📱</div><b>extraction_tel_LM.dump</b><span>Téléphone de Lina — SMS, photos, géoloc</span></a>
+    <a class="file" href="carte.html"><div class="ic">🗺️</div><b>cadastre_VLB.map</b><span>Carte et cadastre de la commune</span></a>
+    <a class="file" href="solution.html"><div class="ic">🦋</div><b>repondre.txt</b><span>Quand tu sauras.</span></a>
+  </div>
+
+  <p class="warn">Œuvre de fiction. Lieux, personnes et organismes sont imaginaires. Toute ressemblance serait fortuite.</p>
+</div>
+<script>
+const lines = [
+"> connexion établie...",
+"> expéditeur : [inconnu]",
+"",
+"Tu ne me connais pas. Ça n'a pas d'importance.",
+"",
+"Le 13 octobre, à 16h30, Lina Morel, 9 ans, est sortie de l'école",
+"des Tilleuls à Vallombre. Elle habitait à 600 mètres.",
+"Elle n'est jamais rentrée.",
+"",
+"Les enquêteurs regardent son père. Ils regardent le garçon du bar.",
+"Ils regardent au mauvais endroit.",
+"",
+"J'ai copié tout ce que j'ai pu : le journal, le procès-verbal,",
+"et le contenu de son téléphone. Le téléphone, surtout.",
+"Elle parlait à quelqu'un. Depuis des semaines.",
+"",
+"Trouve QUI l'a emmenée. Trouve OÙ elle est.",
+"",
+"Et si quelqu'un qui s'appelle Élise t'écrit...",
+"ne lui réponds pas.",
+""
+];
+const term = document.getElementById('term');
+let i=0,j=0,out="";
+const skip = (()=>{try{return sessionStorage.getItem('intro')}catch(e){return null}})();
+function done(){
+  term.innerHTML = out + '<span class="cur"></span>';
+  const f=document.getElementById('files'); f.classList.add('show');
+  try{sessionStorage.setItem('intro','1')}catch(e){}
+}
+if(skip){ out = lines.join("\n"); done(); }
+else (function type(){
+  if(i>=lines.length){ done(); return; }
+  if(j<=lines[i].length){
+    term.innerHTML = out + lines[i].slice(0,j) + '<span class="cur"></span>';
+    j++; setTimeout(type, lines[i].startsWith('>')?18:28);
+  } else { out += lines[i] + "\n"; i++; j=0; setTimeout(type, lines[i-1]===""?350:120); }
+})();
+document.addEventListener('keydown',e=>{ if(e.key==='Escape' && i<lines.length){ i=lines.length; out=lines.join("\n"); }});
+</script>
+</body>
+</html>

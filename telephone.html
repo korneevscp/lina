@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Extraction scellé 3</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .top{font-family:var(--mono);font-size:12px;color:var(--dim);text-align:center;margin-bottom:14px}
+  .top b{color:var(--red2)}
+  .phone{width:100%;max-width:390px;height:780px;max-height:calc(100vh - 110px);min-height:560px;margin:0 auto;background:#000;border:10px solid #1a1a1a;border-radius:42px;position:relative;overflow:hidden;box-shadow:0 0 0 2px #333,0 20px 60px rgba(0,0,0,.8)}
+  .phone .crack{position:absolute;inset:0;pointer-events:none;z-index:50;opacity:.35}
+  .sb{height:34px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font-size:12px;color:#ddd;background:#000;position:relative;z-index:5}
+  .screen{position:absolute;top:34px;left:0;right:0;bottom:0;overflow:hidden}
+  .view{position:absolute;inset:0;overflow-y:auto;background:#0f0f12;display:none}
+  .view.on{display:block}
+  #home{background:linear-gradient(160deg,#2b2048,#0f1530 60%,#08080c);padding:30px 18px}
+  .clock{text-align:center;color:#fff;font-size:54px;font-weight:200;margin:10px 0 0}
+  .date{text-align:center;color:#ccd;font-size:14px;margin-bottom:34px}
+  .apps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px 10px}
+  .app{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;color:#eee;font-size:12px;background:none;border:none;padding:0}
+  .app .i{width:58px;height:58px;border-radius:15px;display:grid;place-items:center;font-size:28px;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+  .app:hover .i{transform:scale(1.06)}
+  .badge{position:relative}
+  .badge::after{content:attr(data-n);position:absolute;top:-6px;right:-6px;background:#e0332a;color:#fff;font-size:11px;border-radius:10px;padding:1px 6px}
+  .hdr{position:sticky;top:0;background:#16161b;border-bottom:1px solid #26262c;padding:12px 14px;display:flex;align-items:center;gap:10px;z-index:3;color:#fff;font-weight:600}
+  .hdr button{background:none;border:none;color:#5aa0ff;font-size:15px;padding:0}
+  .list .row{display:flex;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid #1e1e24;cursor:pointer}
+  .list .row:hover{background:#18181e}
+  .av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:20px;flex:none;color:#fff;font-weight:600}
+  .row .nm{color:#fff;font-weight:600;font-size:15px}
+  .row .pv{color:#999;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+  .row .tm{margin-left:auto;color:#777;font-size:11px;align-self:flex-start}
+  .chat{padding:12px 10px 30px;display:flex;flex-direction:column;gap:6px}
+  .day{align-self:center;color:#888;font-size:11px;margin:12px 0 4px}
+  .b{max-width:78%;padding:8px 12px;border-radius:18px;font-size:14px;line-height:1.35;color:#fff;word-wrap:break-word}
+  .b .t{display:block;font-size:10px;opacity:.6;margin-top:3px;text-align:right}
+  .in{align-self:flex-start;background:#2a2a31;border-bottom-left-radius:5px}
+  .out{align-self:flex-end;background:#2f6fe0;border-bottom-right-radius:5px}
+  .b.ghost{background:#3a0f0f;border:1px solid #7a1a1a;animation:flick 3s infinite}
+  .b .imgmsg{width:180px;border-radius:10px;overflow:hidden;cursor:pointer;display:block}
+  .b .imgmsg svg{display:block;width:100%;height:auto}
+  .sys{align-self:center;font-family:var(--mono);font-size:10px;color:#e2483d;border:1px dashed #7a1a1a;padding:4px 8px;margin:6px 0}
+  .voice{display:flex;align-items:center;gap:8px;cursor:pointer}
+  .voice .w{flex:1;height:18px;background:repeating-linear-gradient(90deg,#aaa 0 2px,transparent 2px 5px);mask:linear-gradient(90deg,#000 0,#000 100%);opacity:.7}
+  .tr{font-size:12px;font-style:italic;color:#e7c6c6;margin-top:6px;display:none}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:2px}
+  .th{aspect-ratio:1;overflow:hidden;cursor:pointer;background:#222;position:relative}
+  .th svg{width:100%;height:100%;object-fit:cover;display:block}
+  .sec{color:#aaa;font-size:12px;padding:14px 12px 6px;text-transform:uppercase;letter-spacing:.06em}
+  .modal{position:absolute;inset:0;background:rgba(0,0,0,.96);z-index:20;display:none;flex-direction:column}
+  .modal.on{display:flex}
+  .modal .mh{display:flex;justify-content:space-between;padding:12px 14px;color:#fff;font-size:13px}
+  .modal .mh button{background:none;border:none;color:#5aa0ff;padding:0}
+  .modal .pic{flex:none;padding:0 8px}
+  .modal .pic svg{width:100%;height:auto;display:block;border-radius:4px}
+  .modal .meta{padding:12px 14px;overflow-y:auto;font-family:var(--mono);font-size:12px;color:#bdb;display:none}
+  .modal .meta table{width:100%;border-collapse:collapse}
+  .modal .meta td{padding:3px 4px;border-bottom:1px solid #222;vertical-align:top}
+  .modal .meta td:first-child{color:#7a7;white-space:nowrap;padding-right:10px}
+  .modal .mb{margin:10px 14px;background:#1c2a1c;border-color:#2e4a2e;color:#bdb;font-family:var(--mono);font-size:12px}
+  .loc{padding:6px 0 30px}
+  .loc .it{display:flex;gap:12px;padding:10px 14px;border-bottom:1px solid #1e1e24;font-size:13px;color:#ddd}
+  .loc .it .h{font-family:var(--mono);color:#5aa0ff;width:46px;flex:none}
+  .loc .it .g{font-family:var(--mono);color:#d9a441}
+  .loc .it.last{background:#2a0c0c}
+  .loc .note{font-size:12px;color:#999;padding:10px 14px}
+  .calls .row .nm.miss{color:#ff5a50}
+  .lock{padding:40px 20px;text-align:center;color:#ddd}
+  .dots{display:flex;gap:14px;justify-content:center;margin:20px 0}
+  .dots span{width:14px;height:14px;border-radius:50%;border:2px solid #aaa}
+  .dots span.f{background:#aaa}
+  .pad{display:grid;grid-template-columns:repeat(3,64px);gap:14px;justify-content:center}
+  .pad button{width:64px;height:64px;border-radius:50%;font-size:22px;background:#222;border:none;color:#fff}
+  .pad button:active{background:#444}
+  .shake{animation:shake .4s}
+  @keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  .note-body{padding:18px;color:#e8e2c8;background:#1a1810;min-height:100%;font-family:"Segoe Print","Comic Sans MS",cursive;font-size:15px;line-height:1.6;white-space:pre-wrap}
+  .note-body h4{margin:0 0 4px;font-family:system-ui;font-size:12px;color:#998}
+  .note-body hr{border:none;border-top:1px dashed #554;margin:18px 0}
+</style>
+</head>
+<body>
+<div class="wrap" style="padding-top:14px">
+  <a class="back" href="index.html">← retour au dossier</a>
+  <div class="top">SCELLÉ N°3 — EXTRACTION LOGIQUE — PROPRIÉTAIRE : MOREL LINA — <b>LECTURE SEULE</b></div>
+
+  <div class="phone">
+    <svg class="crack" viewBox="0 0 370 760" preserveAspectRatio="none"><g stroke="#fff" stroke-width=".8" fill="none"><path d="M300 90 L262 150 L270 210 L230 260"/><path d="M262 150 L210 170 L170 160"/><path d="M270 210 L320 250 L340 300"/><path d="M230 260 L240 330"/><path d="M300 90 L340 60"/></g></svg>
+    <div class="sb"><span id="sbt">17:04</span><span>▂▄▆ 4G · 🔋 23%</span></div>
+    <div class="screen">
+
+      <div class="view on" id="home">
+        <div class="clock">17:04</div>
+        <div class="date">mardi 13 octobre</div>
+        <div class="apps">
+          <button class="app" onclick="openV('msgs')"><div class="i badge" data-n="7" style="background:#2fbf5a">💬</div>Messages</button>
+          <button class="app" onclick="openV('photos')"><div class="i" style="background:linear-gradient(135deg,#ffcc4d,#ff6b6b,#7a5cff)">🌼</div>Photos</button>
+          <button class="app" onclick="openV('loc')"><div class="i" style="background:#2f6fe0">📍</div>Localiser</button>
+          <button class="app" onclick="openV('calls')"><div class="i badge" data-n="14" style="background:#2fbf5a">📞</div>Appels</button>
+          <button class="app" onclick="openV('notes')"><div class="i" style="background:#f2c94c">📝</div>Notes</button>
+          <button class="app" onclick="alert('Appareil photo désactivé (mode extraction).')"><div class="i" style="background:#444">📷</div>Caméra</button>
+        </div>
+      </div>
+
+      <div class="view" id="msgs"><div class="hdr"><button onclick="home()">‹ Accueil</button>Messages</div><div class="list" id="msglist"></div></div>
+      <div class="view" id="thread"><div class="hdr"><button onclick="openV('msgs')">‹</button><span id="thname"></span></div><div class="chat" id="chat"></div></div>
+      <div class="view" id="photos"><div class="hdr"><button onclick="home()">‹ Accueil</button>Photos</div><div id="photogrid"></div></div>
+      <div class="view" id="loc"><div class="hdr"><button onclick="home()">‹ Accueil</button>Localiser — historique</div><div class="loc" id="loclist"></div></div>
+      <div class="view calls" id="calls"><div class="hdr"><button onclick="home()">‹ Accueil</button>Appels récents</div><div class="list" id="calllist"></div></div>
+      <div class="view" id="notes"><div class="hdr"><button onclick="home()">‹ Accueil</button>Notes</div><div id="notesbody"></div></div>
+
+      <div class="modal" id="modal">
+        <div class="mh"><button onclick="closeM()">‹ Retour</button><span id="mname"></span><span></span></div>
+        <div class="pic" id="mpic"></div>
+        <button class="mb" onclick="toggleMeta()">ⓘ Afficher les métadonnées (EXIF)</button>
+        <div class="meta" id="mmeta"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- IMAGES (SVG) ---------- */
+function grain(id){return `<filter id="${id}"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .35 0" result="m"/><feComposite in="m" in2="SourceGraphic" operator="in" result="c"/><feBlend in="SourceGraphic" in2="c" mode="overlay"/></filter>`}
+const IMG = {
+dessin: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${grain(p)}</defs><g filter="url(#${p})">
+ <rect width="300" height="300" fill="#f4efe2"/>
+ <circle cx="255" cy="45" r="22" fill="none" stroke="#f2b705" stroke-width="4"/><g stroke="#f2b705" stroke-width="3"><path d="M255 12v-8M288 45h8M232 22l-6-6M278 22l6-6"/></g>
+ <path d="M20 250 H280" stroke="#4caf50" stroke-width="5"/>
+ <path d="M190 250 V170 L230 135 L270 170 V250Z" fill="none" stroke="#6b4a2b" stroke-width="3"/><rect x="220" y="205" width="18" height="45" fill="none" stroke="#6b4a2b" stroke-width="3"/>
+ <g fill="#ffe14d"><circle cx="200" cy="120" r="4"/><circle cx="245" cy="105" r="4"/><circle cx="275" cy="130" r="4"/><circle cx="185" cy="150" r="3"/></g>
+ <circle cx="70" cy="130" r="18" fill="none" stroke="#333" stroke-width="3"/><circle cx="64" cy="127" r="2"/><circle cx="76" cy="127" r="2"/><path d="M63 136 q7 6 14 0" stroke="#333" fill="none" stroke-width="2"/>
+ <path d="M52 120 h36" stroke="#7a4a1a" stroke-width="5"/>
+ <path d="M70 148 L48 205 H92Z" fill="#ffd400" stroke="#333" stroke-width="2"/><path d="M60 205v40M80 205v40M50 165l-18 20M90 165l18 20" stroke="#333" stroke-width="3"/>
+ <text x="52" y="282" font-family="Comic Sans MS,cursive" font-size="18" fill="#2f6fe0">moi</text>
+ <circle cx="140" cy="130" r="18" fill="none" stroke="#333" stroke-width="3"/>
+ <path d="M140 148 L118 205 H162Z" fill="#fff" stroke="#333" stroke-width="2"/><path d="M130 205v40M150 205v40M120 165l-18 20" stroke="#333" stroke-width="3"/>
+ <path d="M160 165 L108 175" stroke="#333" stroke-width="3"/>
+ <g transform="translate(140 92)"><path d="M0 0 q-14 -16 -20 -2 q6 10 20 2 q14 -16 20 -2 q-6 10 -20 2Z" fill="#3a6fe0"/></g>
+ <text x="118" y="282" font-family="Comic Sans MS,cursive" font-size="18" fill="#2f6fe0">élise</text>
+ </g></svg>`,
+balancoire: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${grain(p)}<linearGradient id="${p}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9c3cc"/><stop offset="1" stop-color="#e3e6e8"/></linearGradient></defs><g filter="url(#${p})">
+ <rect width="300" height="300" fill="url(#${p}s)"/>
+ <rect y="190" width="300" height="110" fill="#8e8a82"/>
+ <g fill="#5c7a4c"><circle cx="30" cy="120" r="40"/><circle cx="270" cy="110" r="45"/></g><rect x="26" y="140" width="8" height="60" fill="#4a3a2a"/><rect x="266" y="140" width="8" height="60" fill="#4a3a2a"/>
+ <g stroke="#555" stroke-width="2">${Array.from({length:31},(_,i)=>`<path d="M${i*10} 150 V200"/>`).join('')}<path d="M0 155 H300M0 195 H300"/></g>
+ <g transform="translate(205 158)"><rect width="78" height="36" rx="3" fill="#f2f2ee"/><rect x="52" y="-10" width="26" height="22" rx="3" fill="#f2f2ee"/><rect x="58" y="-6" width="16" height="10" fill="#9aa8b5"/><circle cx="16" cy="38" r="7" fill="#222"/><circle cx="62" cy="38" r="7" fill="#222"/><g transform="translate(18 14) scale(.6)"><path d="M0 0 q-14 -16 -20 -2 q6 10 20 2 q14 -16 20 -2 q-6 10 -20 2Z" fill="#3a6fe0"/></g></g>
+ <g transform="translate(186 160)"><circle r="5" fill="#333"/><rect x="-5" y="5" width="10" height="20" fill="#3d4a5c"/><path d="M-4 25v12M4 25v12" stroke="#333" stroke-width="3"/></g>
+ <g stroke="#7b2d1f" stroke-width="6" fill="none"><path d="M60 280 L95 120 L130 280"/><path d="M150 280 L185 120 L220 280" opacity="0"/><path d="M95 120 H175"/><path d="M175 120 L205 280M175 120 L145 280"/></g>
+ <g stroke="#444" stroke-width="2"><path d="M120 120 V230M150 120 V230"/></g><rect x="112" y="228" width="46" height="8" fill="#2f2a24"/>
+ <text x="8" y="292" font-family="monospace" font-size="10" fill="#fff" opacity=".7">10/09 16:34</text>
+ </g></svg>`,
+chat: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${grain(p)}</defs><g filter="url(#${p})">
+ <rect width="300" height="300" fill="#6b4f6e"/><rect y="170" width="300" height="130" fill="#3e2f45"/>
+ <ellipse cx="150" cy="190" rx="80" ry="50" fill="#e08a3c"/><circle cx="210" cy="150" r="38" fill="#e08a3c"/>
+ <path d="M185 125 L190 92 L208 118Z M212 116 L232 92 L236 128Z" fill="#e08a3c"/>
+ <g fill="#2a2a2a"><ellipse cx="198" cy="148" rx="4" ry="6"/><ellipse cx="222" cy="148" rx="4" ry="6"/></g><path d="M206 162 l4 4 4 -4" stroke="#2a2a2a" fill="none" stroke-width="2"/>
+ <path d="M72 200 q-40 10 -30 50" stroke="#e08a3c" stroke-width="14" fill="none" stroke-linecap="round"/>
+ <g stroke="#b5622a" stroke-width="5"><path d="M120 160 v30M140 155 v35M160 158 v30"/></g>
+ </g></svg>`,
+chambre: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${grain(p)}<pattern id="${p}w" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#6e5a4a"/><circle cx="12" cy="12" r="4" fill="#8a6f5a"/><circle cx="0" cy="0" r="3" fill="#7d6352"/><circle cx="24" cy="24" r="3" fill="#7d6352"/></pattern><radialGradient id="${p}l" cx=".45" cy=".35" r=".8"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></radialGradient></defs><g filter="url(#${p})">
+ <rect width="300" height="300" fill="url(#${p}w)"/>
+ <rect y="215" width="300" height="85" fill="#3a2a20"/>
+ <rect x="205" y="40" width="70" height="90" fill="#0b0d12" stroke="#d8d0c0" stroke-width="5"/><path d="M240 40v90M205 85h70" stroke="#d8d0c0" stroke-width="4"/>
+ <g fill="#ffe680"><circle cx="220" cy="60" r="1.6"/><circle cx="258" cy="70" r="1.6"/><circle cx="230" cy="110" r="1.6"/></g>
+ <rect x="70" y="40" width="74" height="60" fill="#efe7d6" stroke="#4a3220" stroke-width="5"/>
+ <circle cx="95" cy="62" r="8" fill="none" stroke="#333" stroke-width="1.5"/><path d="M95 70 l-9 18 h18z" fill="#fff" stroke="#333" stroke-width="1.2"/>
+ <g transform="translate(118 58) scale(.45)"><path d="M0 0 q-14 -16 -20 -2 q6 10 20 2 q14 -16 20 -2 q-6 10 -20 2Z" fill="#3a6fe0"/></g>
+ <text x="88" y="96" font-family="Comic Sans MS,cursive" font-size="9" fill="#2f6fe0">Élise 1995</text>
+ <rect x="20" y="175" width="190" height="60" rx="4" fill="#e9dccb"/><rect x="20" y="160" width="40" height="80" fill="#5a3a26"/><rect x="200" y="175" width="14" height="65" fill="#5a3a26"/>
+ <rect x="60" y="168" width="60" height="22" rx="10" fill="#f6f0e6"/>
+ <g>${[80,108,136,164,186].map((x,i)=>`<g transform="translate(${x} ${172-(i%2)*4})"><circle r="9" fill="#f1d9c4"/><circle cx="-3" cy="-1" r="1.6" fill="#000"/><circle cx="3" cy="-1" r="1.6" fill="#000"/><path d="M-9 -4 q9 -12 18 0" fill="${['#5a3a1a','#e0c060','#2a1a10','#a05030','#5a3a1a'][i]}"/><path d="M-8 9 h16 l3 14 h-22z" fill="${['#c94f6d','#5c88c4','#e6e6e6','#7aa36b','#ffd400'][i]}"/></g>`).join('')}</g>
+ <g transform="translate(250 150)"><path d="M0 0 v8" stroke="#555" stroke-width="2"/><path d="M-16 8 h32 l6 60 h-44z" fill="#ffd400"/><path d="M-16 8 l-8 30M16 8 l8 30" stroke="#ffd400" stroke-width="9"/></g>
+ <rect width="300" height="300" fill="url(#${p}l)"/>
+ </g></svg>`,
+toi: p=>`<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>${grain(p)}<filter id="${p}b"><feGaussianBlur stdDeviation="1.4"/></filter></defs><g filter="url(#${p})">
+ <rect width="300" height="300" fill="#9fa6a8"/><rect y="200" width="300" height="100" fill="#7c7a74"/>
+ <g filter="url(#${p}b)"><g transform="translate(170 150)"><circle r="12" fill="#5a3a1a"/><path d="M-16 10 h32 l8 50 h-48z" fill="#ffd400"/><rect x="-14" y="14" width="28" height="30" rx="4" fill="#ff7eb6"/><path d="M-9 60 v26M9 60 v26" stroke="#334" stroke-width="7"/></g>
+ <g transform="translate(60 160) scale(.8)"><circle r="12" fill="#c9a37a"/><path d="M-14 10 h28 l6 46 h-40z" fill="#7a3a8a"/></g></g>
+ <g fill="#1a1a1a">${Array.from({length:9},(_,i)=>`<rect x="${i*36}" y="0" width="12" height="300"/>`).join('')}<rect y="40" width="300" height="8"/><rect y="250" width="300" height="8"/></g>
+ <rect width="300" height="300" fill="#000" opacity=".15"/>
+ </g></svg>`
+};
+let uid=0; const svg = k => IMG[k]('g'+(uid++));
+
+/* ---------- PHOTOS + EXIF ---------- */
+const PHOTOS = [
+ {k:"dessin", n:"IMG_0412.jpg", sec:"Pellicule", exif:{"Fichier":"IMG_0412.jpg","Date de prise":"2026:09:02 18:47:10","Appareil":"KidFone K3 (téléphone de la victime)","Dimensions":"3264 × 2448","Position GPS":"VLB 25-44","Commentaire":"—"}},
+ {k:"balancoire", n:"IMG_0419.jpg", sec:"Pellicule", exif:{"Fichier":"IMG_0419.jpg","Date de prise":"2026:09:10 16:34:52","Appareil":"KidFone K3 (téléphone de la victime)","Dimensions":"3264 × 2448","Position GPS":"VLB 22-40","Commentaire":"—"}},
+ {k:"chat", n:"IMG_0427.jpg", sec:"Pellicule", exif:{"Fichier":"IMG_0427.jpg","Date de prise":"2026:09:20 19:03:31","Appareil":"KidFone K3 (téléphone de la victime)","Dimensions":"3264 × 2448","Position GPS":"VLB 25-44","Commentaire":"—"}},
+ {k:"chambre", n:"chambre.jpg", sec:"Reçues (Messages)", exif:{"Fichier":"chambre.jpg","Reçue de":"Élise 🦋 — 07/10/2026 20:02","Date de prise":"2026:10:06 19:12:44","Marque":"samsung","Modèle":"SM-A125F","Logiciel":"A125FXXU2BUG1","Artist":"Martine F.","Dimensions":"4000 × 3000","Position GPS":"VLB 37-82","Altitude":"212 m","Commentaire":"elle revient bientot"}},
+ {k:"toi", n:"toi.jpg", sec:"Supprimés récemment", del:true, exif:{"Fichier":"toi.jpg","Reçue de":"Élise 🦋 — 16/09/2026 22:10","Supprimée le":"16/09/2026 22:14 (par l'utilisatrice)","Date de prise":"2026:09:16 15:58:03","Marque":"samsung","Modèle":"SM-A125F","Logiciel":"A125FXXU2BUG1","Artist":"Martine F.","Position GPS":"VLB 22-41","Commentaire":"notre jaune"}}
+];
+function renderPhotos(){
+  const secs = [...new Set(PHOTOS.map(p=>p.sec))];
+  document.getElementById('photogrid').innerHTML = secs.map(s=>`<div class="sec">${s}${s==='Supprimés récemment'?' · 1 élément':''}</div><div class="grid">${PHOTOS.map((p,i)=>p.sec===s?`<div class="th" onclick="showPhoto(${i})" style="${p.del?'opacity:.55':''}">${svg(p.k)}</div>`:'').join('')}</div>`).join('');
+}
+function showPhoto(i){
+  const p=PHOTOS[i];
+  document.getElementById('mname').textContent=p.n;
+  document.getElementById('mpic').innerHTML=svg(p.k);
+  const m=document.getElementById('mmeta'); m.style.display='none';
+  m.innerHTML='<table>'+Object.entries(p.exif).map(([a,b])=>`<tr><td>${a}</td><td>${b}</td></tr>`).join('')+'</table>';
+  document.getElementById('modal').classList.add('on');
+}
+function toggleMeta(){const m=document.getElementById('mmeta');m.style.display=m.style.display==='block'?'none':'block'}
+function closeM(){document.getElementById('modal').classList.remove('on')}
+
+/* ---------- MESSAGES ---------- */
+const T = {
+ maman:{name:"Maman ❤️",av:"👩",c:"#c94f6d",msgs:[
+  ["d","Lundi 12 octobre"],
+  ["in","N'oublie pas ton gilet demain il va faire frais","07:48"],["out","oui maman","07:52"],
+  ["d","Mardi 13 octobre"],
+  ["in","Tu rentres direct ma puce ? Je finis à 18h. Goûter dans le placard 🍪","16:02"],
+  ["out","oui maman je rentre direct","16:05"],
+  ["in","Lina tu es rentrée ?","17:21"],["in","Réponds-moi ma chérie","17:34"],["in","Lina je ne rigole pas","17:48"],
+  ["in","LINA","17:59"],["in","Je t'en supplie réponds","18:04"],["in","On te cherche partout. Maman t'aime. Où es-tu ?","18:41"],["in","Lina 💔","23:57"]]},
+ papa:{name:"Papa",av:"👨",c:"#4a7bb7",msgs:[
+  ["d","Samedi 10 octobre"],
+  ["in","Bisous ma princesse. Je viens te chercher samedi prochain, on ira au cinéma promis 🎬","19:30"],
+  ["out","papa tu me manques","19:31"],["in","Toi aussi tu me manques. Plus que tout.","19:33"],
+  ["d","Mardi 13 octobre"],["in","Maman m'a appelé. Lina, où es-tu ? Je pars de Saint-Aubert maintenant.","18:47"]]},
+ ines:{name:"Inès 🌸",av:"👧",c:"#9b59b6",msgs:[
+  ["d","Lundi 12 octobre"],
+  ["out","demain je vais voir mon amie secrète 🤫","20:12"],["in","c'est qui ??","20:13"],
+  ["out","je peux pas dire. elle a une maison avec des lucioles","20:13"],["in","menteuse y a pas de lucioles en octobre 😂","20:14"],
+  ["out","si chez elle y en a toujours","20:15"],["in","tu me raconteras ?","20:15"],["out","promis","20:16"]]},
+ elise:{name:"Élise 🦋",av:"🦋",c:"#1e3a7a",msgs:[
+  ["d","Jeudi 3 septembre"],
+  ["in","coucou c'est élise 🦋 je t'ai vue à la récré. tu es trop jolie avec ton anorak jaune","21:14"],
+  ["out","c'est qui ? tu es dans mon école ?","21:20"],
+  ["in","avant oui. maintenant je peux plus y aller. mais mon papa il y va souvent, c'est lui qui répare les choses","21:21"],
+  ["d","Jeudi 10 septembre"],
+  ["in","tu as vu la balançoire ? mon papa l'a réparée rien que pour toi","17:02"],
+  ["out","le monsieur avec la camionnette blanche ?","17:05"],
+  ["in","oui ! celle avec mon papillon dessus. c'est moi le papillon 🦋","17:05"],
+  ["d","Mercredi 16 septembre"],
+  ["in","[photo supprimée]","22:10"],
+  ["out","c'est moi ?? pourquoi tu me prends en photo","22:13"],
+  ["in","parce que tu es la plus jolie. tu me ressembles","22:13"],
+  ["out","j'aime pas","22:14"],["in","pardon pardon 🦋 je recommencerai plus","22:15"],
+  ["d","Vendredi 18 septembre"],
+  ["in","ma tante elle fait les meilleures madeleines du monde. elle en faisait à la kermesse de ton école. elle dit que tu peux venir quand tu veux","18:30"],
+  ["d","Mardi 22 septembre"],
+  ["out","pourquoi tu m'envoies jamais de photo de toi","20:40"],
+  ["in","je suis timide","20:52"],["in","et puis bientôt je te ressemblerai","20:52"],
+  ["d","Vendredi 25 septembre"],
+  ["voice","0:14","[transcription automatique — qualité faible] « …luciole, luciole, reviens dans ta maison… la porte est ouverte, la chambre est prête… luciole, luciole… » (voix adulte, féminine, chantonnée)","23:51"],
+  ["out","c'est pas ta voix ça","07:10"],["in","c'est ma tante. elle chante pour moi le soir","07:11"],
+  ["d","Mercredi 30 septembre"],
+  ["in","si on a un secret il faut un code. mets le mien sur tes notes","19:00"],
+  ["out","c'est quoi ton code","19:01"],
+  ["in","le jour où je suis allée dans l'eau. le jour et le mois. 4 chiffres","19:02"],
+  ["out","dans l'eau ? tu sais nager ?","19:03"],["in","plus maintenant 🦋","19:20"],
+  ["d","Mercredi 7 octobre"],
+  ["in","ma tante a refait ma chambre. regarde","20:02"],["img","chambre","20:02"],
+  ["out","elle est trop belle !! il y a plein de poupées","20:05"],
+  ["out","pourquoi y a un anorak comme le mien","20:05"],
+  ["in","c'est TA chambre maintenant si tu veux","20:06"],
+  ["d","Lundi 12 octobre"],
+  ["in","demain après l'école. au lavoir à 16h40. ma tante viendra te chercher, elle aura un parapluie, tu la reconnaîtras. on va voir les lucioles","19:44"],
+  ["out","maman voudra pas","19:45"],
+  ["in","maman n'a pas besoin de savoir. tu rentres avant le dîner promis 🦋","19:45"],
+  ["d","Mardi 13 octobre"],
+  ["out","j'arrive","16:36"],
+  ["in","je te vois.","16:41"],
+  ["out","c'est elle ta tante ? elle chante bizarre","16:44"],
+  ["in","monte.","16:45"],
+  ["out","t'es où élise ? t'es pas dans la camionnette","16:53"],
+  ["out","on va où c'est pas le chemin des lucioles","17:01"],
+  ["out","je veux rentrer chez maman","17:02"],
+  ["out","la dame elle m'appelle élise","17:03"],
+  ["sys","— le téléphone a été déconnecté du réseau à 17:04 —"],
+  ["sys","— scellé n°3 placé sous clé le 14/10 à 11:20 · batterie retirée —"],
+  ["d","Jeudi 15 octobre"],
+  ["ghost","elle est bien à la maison maintenant. arrêtez de chercher.","03:33"],
+  ["ghost","je ne suis plus toute seule 🦋","03:33"]]}
+};
+const ORDER=["elise","maman","papa","ines"];
+function renderList(){
+  document.getElementById('msglist').innerHTML = ORDER.map(k=>{const t=T[k];const last=[...t.msgs].reverse().find(m=>m[0]!=="d"&&m[0]!=="sys");
+    return `<div class="row" onclick="openT('${k}')"><div class="av" style="background:${t.c}">${t.av}</div><div><div class="nm">${t.name}</div><div class="pv">${last[0]==='img'?'📷 Photo':last[0]==='voice'?'🎤 Message vocal':last[1]}</div></div><div class="tm">${last[last.length-1]}</div></div>`}).join('');
+}
+function esc(s){return s.replace(/</g,"&lt;")}
+function openT(k){
+  const t=T[k]; document.getElementById('thname').textContent=t.name;
+  document.getElementById('chat').innerHTML = t.msgs.map((m,i)=>{
+    switch(m[0]){
+      case "d": return `<div class="day">${m[1]}</div>`;
+      case "sys": return `<div class="sys">${m[1]}</div>`;
+      case "img": return `<div class="b in"><span class="imgmsg" onclick="showPhoto(3)">${svg(m[1])}</span><span class="t">${m[2]}</span></div>`;
+      case "voice": return `<div class="b in"><div class="voice" onclick="this.nextElementSibling.style.display='block'">▶ <span class="w"></span> ${m[1]}</div><div class="tr">${m[2]}</div><span class="t">${m[3]}</span></div>`;
+      case "ghost": return `<div class="b in ghost">${esc(m[1])}<span class="t">${m[2]}</span></div>`;
+      default: return `<div class="b ${m[0]}">${esc(m[1])}<span class="t">${m[2]}</span></div>`;
+    }}).join('');
+  openV('thread');
+  const v=document.getElementById('thread'); v.scrollTop=v.scrollHeight;
+}
+
+/* ---------- LOCALISATION ---------- */
+const LOC = [
+ ["d","Lundi 12 octobre"],
+ ["08:21","VLB 25-44","Domicile","—"],["08:29","VLB 22-40","École Les Tilleuls","à pied"],["16:39","VLB 25-44","Domicile","à pied"],
+ ["d","Mardi 13 octobre"],
+ ["08:24","VLB 22-40","—","à pied · 4 km/h"],
+ ["16:31","VLB 22-40","—","immobile"],
+ ["16:37","VLB 23-42","—","à pied · 4 km/h"],
+ ["16:41","VLB 24-47","—","à pied · 3 km/h"],
+ ["16:47","VLB 24-47","—","immobile"],
+ ["16:53","VLB 26-50","—","véhicule · 46 km/h"],
+ ["16:58","VLB 28-55","—","véhicule · 52 km/h"],
+ ["17:02","VLB 31-60","—","véhicule · 31 km/h"],
+ ["17:04","VLB 31-61","—","immobile · signal perdu",1]
+];
+function renderLoc(){
+  document.getElementById('loclist').innerHTML = `<div class="note">Contrôle parental « FamilleZen » — précision ± 15 m. Les positions sont exprimées dans le carroyage cadastral communal (VLB colonne-ligne).</div>` +
+   LOC.map(l=> l[0]==="d" ? `<div class="sec">${l[1]}</div>` :
+    `<div class="it${l[4]?' last':''}"><span class="h">${l[0]}</span><span><span class="g">${l[1]}</span>${l[2]!=='—'?' · '+l[2]:''}<br><span class="dim small">${l[3]}</span></span></div>`).join('') +
+   `<div class="note">⚠ Aucune position après 17:04. Dernière direction de déplacement : sud-est.<br>➜ <a href="carte.html" target="_blank">Ouvrir le cadastre communal</a></div>`;
+}
+
+/* ---------- APPELS ---------- */
+const CALLS = [
+ ["Maman ❤️","13/10 23:12",1,"manqué"],["Maman ❤️","13/10 19:30",1,"manqué"],["Papa","13/10 18:52",1,"manqué"],["Maman ❤️","13/10 18:20",1,"manqué"],
+ ["Maman ❤️","13/10 18:01",1,"manqué"],["Maman ❤️","13/10 17:41",1,"manqué"],["Maman ❤️","13/10 17:22",1,"manqué"],
+ ["Élise 🦋","13/10 16:40",0,"entrant · 0:04"],
+ ["Élise 🦋","25/09 23:50",0,"entrant · 0:00 — messagerie"],
+ ["Papa","10/10 19:10",0,"sortant · 6:32"],["Maman ❤️","12/10 12:15",0,"entrant · 1:02"]
+];
+function renderCalls(){
+  document.getElementById('calllist').innerHTML = CALLS.map(c=>`<div class="row"><div class="av" style="background:#333">📞</div><div><div class="nm ${c[2]?'miss':''}">${c[0]}</div><div class="pv">${c[3]}</div></div><div class="tm">${c[1]}</div></div>`).join('') +
+  `<div class="note small dim" style="padding:12px 14px">+ 7 appels manqués supplémentaires après 23:12 (Maman ❤️, Papa, numéro masqué)</div>`;
+}
+
+/* ---------- NOTES (verrouillé) ---------- */
+let code="";
+const H = s=>{let h=5381;for(const c of s)h=((h<<5)+h+c.charCodeAt(0))>>>0;return h};
+const NOTE_KEY = 2181916214; // hash du code
+function renderLock(){
+  document.getElementById('notesbody').innerHTML = `<div class="lock" id="lockbox"><div style="font-size:34px">🔒</div><div>Notes protégées</div><div class="small dim">Saisis ton code secret</div>
+  <div class="dots">${[0,1,2,3].map(i=>`<span class="${i<code.length?'f':''}"></span>`).join('')}</div>
+  <div class="pad">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>n===''?'<span></span>':`<button onclick="key('${n}')">${n}</button>`).join('')}</div>
+  <div class="small dim" style="margin-top:18px">indice enregistré : « le jour où elle est allée dans l'eau »</div></div>`;
+}
+function key(n){
+  if(n==='⌫'){code=code.slice(0,-1);renderLock();return}
+  code+=n; renderLock();
+  if(code.length===4){
+    if(H("vlb"+code)===NOTE_KEY){ showNotes(); }
+    else { const b=document.getElementById('lockbox'); b.classList.add('shake'); setTimeout(()=>{code="";renderLock()},450); }
+  }
+}
+function showNotes(){
+  document.getElementById('notesbody').innerHTML = `<div class="note-body">
+<h4>📝 mon secret — 01/10/2026</h4>élise c'est mon amie secrète. personne la connaît à l'école, même pas la maîtresse. c'est normal elle dit, ça fait longtemps qu'elle y va plus.
+
+son papa c'est le monsieur qui répare la balançoire. il a une camionnette blanche avec un papillon bleu derrière. il me dit bonjour mais il parle pas beaucoup. il a les yeux tristes.
+
+sa tante c'est la dame des madeleines de la kermesse. elle m'a fait un câlin trop long une fois.
+<hr><h4>📝 08/10/2026</h4>élise dit que sa maison c'est loin du village, après le vieux moulin, près de l'étang. il y a des lucioles toute l'année elle dit.
+
+j'ai demandé l'adresse elle a dit "tu as la photo, la photo sait où c'est". je comprends pas.
+<hr><h4>📝 12/10/2026</h4>j'ai un peu peur.
+élise elle répond toujours très vite, même la nuit. même à l'école quand c'est la récré et que je la vois pas.
+et sa chambre elle a l'air vieille. mais elle a dit que c'est la mienne maintenant.
+
+demain je vais voir. si c'est bizarre je rentre.
+<hr><h4>📝 brouillon — 13/10/2026 16:59</h4>la dame elle a fermé la porte à clé. le monsieur conduit et il pleure. elle chante. elle m'a dit
+</div>`;
+}
+
+/* ---------- NAV ---------- */
+function openV(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));document.getElementById(id).classList.add('on');closeM();
+  if(id==='notes'){code="";renderLock();}}
+function home(){openV('home')}
+renderList();renderPhotos();renderLoc();renderCalls();
+</script>
+</body>
+</html>
