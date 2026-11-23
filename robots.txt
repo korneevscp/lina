@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /luciole.html
+Disallow: /cam_lavoir/
+# La camera du lavoir est hors service depuis le 13/10. Ne pas indexer.

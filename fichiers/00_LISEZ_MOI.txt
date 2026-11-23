@@ -1,0 +1,29 @@
+=====================================================================
+        LUCIOLE  -  OÙ EST LINA ?
+=====================================================================
+
+Je m'appelle R. Marchand. J'étais l'adjudant chargé de l'affaire.
+J'ai trouvé quatre drapeaux sur cinq. Puis le chef m'a dit d'arrêter
+de « remuer le passé ». Et la nuit, le babyphone a commencé à chanter.
+
+Le 13 octobre 2026 à 16h30, Lina Morel, 9 ans, est sortie de l'école.
+Le 15 octobre à 03h33, un lien a circulé sur un forum : le flux en direct
+d'une caméra de chambre d'enfant. Il y a quelqu'un dans le lit.
+
+Voici les 5 pièces saisies. Chacune cache UN vrai flag.
+
+  01  01_la_chambre.jpg              (photo)
+  02  02_photo_de_classe.png         (photo)
+  03  03_message_vocal.wav           (audio)
+  04  04_camera_du_relais.mp4        (vidéo)
+  05  05_note_secrete.txt            (texte)
+
+Format obligatoire : B1{...}
+Si tu trouves B1{X01.EXE ta bien eu ses un fake}, c'est un faux : continue.
+Les énoncés et 2 indices par épreuve sont sur le site.
+
+Les premières lettres des 5 vrais flags forment un mot. Lis-le.
+Et n'oublie pas qu'elle n'était pas seule dans la camionnette.
+
+Finis ce que je n'ai pas pu finir.
+- R.M.
